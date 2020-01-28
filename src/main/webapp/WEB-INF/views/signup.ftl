@@ -84,7 +84,7 @@ body {
 </head>
 
 <body>
-	<#include "header.ftl">
+	<#include "/common/header.ftl">
 
 	<div class="container login-container">
             <div class="row">
@@ -105,7 +105,7 @@ body {
             </div>
         </div>
 
-	<#include "footer.ftl">
+	<#include "/common/footer.ftl">
 
 
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"

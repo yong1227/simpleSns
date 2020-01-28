@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans
-	xmlns="http://www.springframework.org/schema/mvc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans:beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
@@ -12,12 +11,14 @@
 		infrastructure -->
 
 	<!-- Enables the Spring MVC @Controller programming model -->
-	<annotation-driven />
+	<mvc:annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
 		up static resources in the ${webappRoot}/resources directory -->
-	<resources mapping="/resources/**" location="/resources/" />
-
+	<!--  
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	-->
+	
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->
 	<!-- <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
@@ -27,28 +28,59 @@
 	<context:component-scan
 		base-package="com.simple.sns" />
 
-
-<!--  
-	<beans:bean id="freemarkerConfig"
-		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+	<!-- Freemarker 사용을위한 컴포넌트 정의 -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer"
+		id="freemarkerConfig">
+		<beans:property name="preferFileSystemAccess"
+			value="true">
+		</beans:property>
 		<beans:property name="templateLoaderPath"
-			value="" />
-		<beans:property name="defaultEncoding" value="utf-8" />
-		<beans:property name="freemarkerSettings">
-			<beans:props>
-				<beans:prop key="number_format">0.####</beans:prop>
-			</beans:props>
+			value="/WEB-INF/views/">
+		</beans:property>
+		<beans:property name="defaultEncoding" value="UTF-8">
+		</beans:property>
+		<beans:property name="freemarkerVariables">
+			<beans:map>
+				<beans:entry key="xml_escape" value-ref="fmXmlEscape"></beans:entry>
+				<beans:entry key="output_encoding" value="UTF-8"></beans:entry>
+				<beans:entry key="whitespace_stripping" value="true"></beans:entry>
+				<beans:entry key="template_update_delay" value="60"></beans:entry>
+			</beans:map>
 		</beans:property>
 	</beans:bean>
-	
-	<beans:bean 
-		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-		<beans:property name="contentType"
-			value="text/html; charset=utf-8" />
-		<beans:property name="cache" value="true" />
-		<beans:property name="prefix" value="/WEB-INF/views/" />
-		<beans:property name="suffix" value=".ftl" />
+
+	<beans:bean class="freemarker.template.utility.XmlEscape"
+		id="fmXmlEscape"></beans:bean>
+
+
+	<!-- DispatcherServlet Context: 서블릿의 요청 처리를 위한 것들을 정의 -->
+
+	<!-- 이미지, 자바스클립트, CSS 와 같은 정적 컨텐츠 요청(GET) 을 처리하기 위하여 설정 (커스터마이징 필요 ) -->
+	<!-- webapp 폴더가 루트 이다. -->
+	<mvc:resources location="/resources/images/" mapping="/images/**"></mvc:resources>
+	<mvc:resources location="/resources/js/" mapping="/js/**"></mvc:resources>
+	<mvc:resources location="/resources/css/" mapping="/css/**"></mvc:resources>
+
+	<!-- 뷰처리 위한 ViewResolver 정의 -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.BeanNameViewResolver"
+		id="beanNameViewResolver">
+		<beans:property name="order" value="0">
+		</beans:property>
 	</beans:bean>
 
--->
+
+	<!-- 프로젝트 특성에 맞게 뷰를 수정하기 위하여 별도의 사용자 정의 View 클래스를 지정 ( 커스터마이징 필요 ) -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+		id="freeMarkerViewResolver">
+		<beans:property name="order" value="1"></beans:property>
+		<beans:property name="cache" value="true"></beans:property>
+		<beans:property name="prefix" value=""></beans:property>
+		<beans:property name="suffix" value=".ftl"></beans:property>
+	</beans:bean>
+
+
+
 </beans:beans>
