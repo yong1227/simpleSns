@@ -28,6 +28,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
@@ -123,6 +124,19 @@
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 			<version>2.3.28</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.freemarker/freemarker-gae -->
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker-gae</artifactId>
+			<version>2.3.28</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${org.springframework-version}</version>
 		</dependency>
 
 	</dependencies>
