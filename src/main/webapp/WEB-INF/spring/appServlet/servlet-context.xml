@@ -53,7 +53,6 @@
 	<beans:bean class="freemarker.template.utility.XmlEscape"
 		id="fmXmlEscape"></beans:bean>
 
-
 	<!-- DispatcherServlet Context: 서블릿의 요청 처리를 위한 것들을 정의 -->
 
 	<!-- 이미지, 자바스클립트, CSS 와 같은 정적 컨텐츠 요청(GET) 을 처리하기 위하여 설정 (커스터마이징 필요 ) -->
@@ -80,7 +79,4 @@
 		<beans:property name="prefix" value=""></beans:property>
 		<beans:property name="suffix" value=".ftl"></beans:property>
 	</beans:bean>
-
-
-
 </beans:beans>

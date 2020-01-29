@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration 	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+		<!-- alias를 설정합니다. -->
+		<typeAlias type="com.simple.sns.domain.UserVO"  alias="userVO" />
+	</typeAliases>
+</configuration>
