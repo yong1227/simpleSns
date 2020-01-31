@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.simple.sns.domain.ResponseResult;
 import com.simple.sns.domain.TokenVO;
 import com.simple.sns.domain.UserVO;
-import com.simple.sns.repository.UserDAO;
 import com.simple.sns.service.UserService;
 import com.simple.sns.util.RandomToken;
 
@@ -40,37 +39,29 @@ public class UserController {
 	
 	// 모든 user
 	@GetMapping("/userAll")
-	public ResponseResult listUsers() {
+	public ResponseResult findUsers() {
 		logger.info("listUsers() called");
 		
-		List<UserVO> userList = userService.listUsers();
-		
-		for(UserVO user : userList) {
-			System.out.println("first : " + user);
-		}
+		List<UserVO> userList = userService.findUsers();
 		
 		responseResult.setCode(HttpStatus.OK);
 		responseResult.setMessage("Success");
 		responseResult.setData(userList);
-		
-		System.out.println("responseResult : "+ responseResult);
 		
 		return responseResult;
 	}
 	
 	// id로 회원 정보 하나 조회 
 	@GetMapping("/user")
-	public ResponseResult getUserOneById(@RequestParam("id") Long id) throws Exception {
+	public ResponseResult findUserById(@RequestParam("id") Long id) throws Exception {
 		logger.info("getUserOne() called");
 		
-		userVO = userService.getUserOne(id);
-		System.out.println("userVo : "+ userVO);
+		userVO = userService.findUserById(id);
 		
 		responseResult.setCode(HttpStatus.OK);
 		responseResult.setMessage("Success");
 		responseResult.setData(userVO);
 		
-		System.out.println("responseResult : "+ responseResult);
 		
 		return responseResult;
 	}
@@ -84,16 +75,13 @@ public class UserController {
 
 		//responeData
 		Long id = userVO.getId();
-		System.out.println("id : " + id);
 		
-		userVO = userService.getUserOne(id);
+		userVO = userService.findUserById(id);
 		
 		responseResult.setCode(HttpStatus.OK);
 		responseResult.setMessage("Success");
 		responseResult.setData(userVO);
 		
-		System.out.println("responseResult : "+ responseResult);
-
 		return responseResult;
 	}
 	
@@ -103,14 +91,11 @@ public class UserController {
 		logger.info("auth() called");
 		
 		//getUerId
-		userVO = userService.login(userVO);
-		System.out.println("userOne : "+userVO);
+		userVO = userService.findUserByUsernameAndPassword(userVO);
 		Long userId = userVO.getId();
-		System.out.println("userID : " + userId);
 		
 		//token 생성
 		StringBuffer token = ramdomToken.makeToken();
-		System.out.println("token : "  + token);
 		
 		//token toString
 		String tokenToString = token.toString();
@@ -118,19 +103,15 @@ public class UserController {
 		//insert token
 		tokenVO.setUserId(userId);
 		tokenVO.setToken(tokenToString);
-		System.out.println("tokenVO : "+ tokenVO);
 		userService.insertToken(tokenVO);
 		
 		//select token
-		tokenVO = userService.selectToken(tokenVO);
-		System.out.println("tokenVO2 : " + tokenVO);
+		tokenVO = userService.findTokenByToken(tokenVO);
 		
 		//responseData
 		responseResult.setCode(HttpStatus.OK);
 		responseResult.setMessage("Success");
 		responseResult.setData(tokenVO);
-		
-		System.out.println(responseResult);
 		
 		return responseResult;
 	}

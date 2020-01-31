@@ -17,21 +17,21 @@ public class UserDAO {
 	private SqlSession sqlSession;
 	
 	// 전체 조회
-	public List<UserVO> selectAllUserList() throws DataAccessException{
+	public List<UserVO> findUsers() throws DataAccessException{
 		List<UserVO> userList = null;
-		userList = sqlSession.selectList("mapper.user.selectAllUserList");
+		userList = sqlSession.selectList("mapper.user.findUsers");
 		return userList;
 	}
 	
 	// 로그인
-	public UserVO loginByUser(UserVO userVO) throws DataAccessException{
-		UserVO vo = sqlSession.selectOne("mapper.user.loginByUser", userVO);
+	public UserVO findUserByUsernameAndPassword(UserVO userVO) throws DataAccessException{
+		UserVO vo = sqlSession.selectOne("mapper.user.findUserByUsernameAndPassword", userVO);
 		return vo;
 	}
 	
 	// 한 명만 조회
-	public UserVO getUserOne(Long id) throws DataAccessException{
-		UserVO vo = sqlSession.selectOne("mapper.user.getUserOne", id);
+	public UserVO findUserById(Long id) throws DataAccessException{
+		UserVO vo = sqlSession.selectOne("mapper.user.findUserById", id);
 		return vo;
 	}
 	
@@ -47,8 +47,8 @@ public class UserDAO {
 		return vo;
 	}
 	
-	// 토근 조회
-	public TokenVO selectToken(TokenVO token) {
-		return sqlSession.selectOne("mapper.user.selectToken", token);
+	// 토큰 조회
+	public TokenVO findTokenByToken(TokenVO token) {
+		return sqlSession.selectOne("mapper.user.findTokenByToken", token);
 	}
 }

@@ -18,20 +18,20 @@
 		<result property="createdAt" column="created_at"/>
 	</resultMap>
 	
-	<select id="selectAllUserList" resultMap="userResult">
+	<select id="findUsers" resultMap="userResult">
       <![CDATA[
          select * from user
       ]]>
 	</select>
 	
-	<select id="loginByUser"  resultMap="userResult"   parameterType="userVO" >
+	<select id="findUserByUsernameAndPassword"  resultMap="userResult"   parameterType="userVO" >
 	<![CDATA[
 		select * from user	
 		where username=#{username} and password=#{password}		
 	]]>
 	</select>
 	
-	<select id="getUserOne"  resultMap="userResult"   parameterType="Long" >
+	<select id="findUserById"  resultMap="userResult"   parameterType="Long" >
 	<![CDATA[
 		select * from user
 		where id=#{id}		
@@ -52,7 +52,7 @@
 		]]>      
 	</insert>
 	
-	<select id="selectToken"  parameterType="String" resultMap="tokenResult">
+	<select id="findTokenByToken"  parameterType="String" resultMap="tokenResult">
 		<![CDATA[
 			select * from token
 			where token=#{token}

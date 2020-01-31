@@ -17,18 +17,18 @@ public class UserService {
 	private UserDAO userDAO;
 	
 	
-	public List<UserVO> listUsers() throws DataAccessException{
+	public List<UserVO> findUsers() throws DataAccessException{
 		List<UserVO> userList = null;
-		userList = userDAO.selectAllUserList();
+		userList = userDAO.findUsers();
 		return userList;
 	}
 	
-	public UserVO login(UserVO userVO) throws Exception{
-		return userDAO.loginByUser(userVO);
+	public UserVO findUserByUsernameAndPassword(UserVO userVO) throws Exception{
+		return userDAO.findUserByUsernameAndPassword(userVO);
 	}
 	
-	public UserVO getUserOne(Long id) throws Exception{
-		return userDAO.getUserOne(id);
+	public UserVO findUserById(Long id) throws Exception{
+		return userDAO.findUserById(id);
 	}
 	
 	public int insertUser(UserVO userVO) throws DataAccessException{
@@ -39,7 +39,7 @@ public class UserService {
 		return userDAO.insertToken(tokenVO);
 	}
 	
-	public TokenVO selectToken(TokenVO tokenVO) {
-		return userDAO.selectToken(tokenVO);
+	public TokenVO findTokenByToken(TokenVO tokenVO) {
+		return userDAO.findTokenByToken(tokenVO);
 	}
 }
