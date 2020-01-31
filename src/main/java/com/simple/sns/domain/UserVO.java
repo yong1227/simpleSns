@@ -1,45 +1,34 @@
 package com.simple.sns.domain;
 
-import java.sql.Date;
 
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserVO {
 
-	private int id;
-	private String userName;
+	private Long id;
+	private String username;
 	private String password;
-	private Date createdAt;
+	private String createdAt;
 	
 	public UserVO() {
 		super();
 	}
-	
-	
-	public UserVO(int id, String userName, String password, Date createdAt) {
-		super();
-		this.id = id;
-		this.userName = userName;
-		this.password = password;
-		this.createdAt = createdAt;
-	}
 
-
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -50,17 +39,17 @@ public class UserVO {
 		this.password = password;
 	}
 
-	public Date getCreatedAt() {
+	public String getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(String createdAt) {
 		this.createdAt = createdAt;
 	}
 
 	@Override
 	public String toString() {
-		return "UserVO [id=" + id + ", userName=" + userName + ", password=" + password + ", createdAt=" + createdAt
+		return "UserVO [id=" + id + ", username=" + username + ", password=" + password + ", createdAt=" + createdAt
 				+ "]";
 	}
 }

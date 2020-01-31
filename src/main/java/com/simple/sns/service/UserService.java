@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.simple.sns.domain.TokenVO;
 import com.simple.sns.domain.UserVO;
 import com.simple.sns.repository.UserDAO;
 
@@ -23,14 +24,22 @@ public class UserService {
 	}
 	
 	public UserVO login(UserVO userVO) throws Exception{
-		return userDAO.loginById(userVO);
+		return userDAO.loginByUser(userVO);
 	}
 	
-	public UserVO getUserOne(int id) throws Exception{
+	public UserVO getUserOne(Long id) throws Exception{
 		return userDAO.getUserOne(id);
 	}
 	
 	public int insertUser(UserVO userVO) throws DataAccessException{
 		return userDAO.insertUser(userVO);
+	}
+	
+	public int insertToken(TokenVO tokenVO) {
+		return userDAO.insertToken(tokenVO);
+	}
+	
+	public TokenVO selectToken(TokenVO tokenVO) {
+		return userDAO.selectToken(tokenVO);
 	}
 }

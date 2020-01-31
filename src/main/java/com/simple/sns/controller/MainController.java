@@ -2,6 +2,7 @@ package com.simple.sns.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -9,21 +10,21 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class MainController {
 
-	@RequestMapping("/")
+	@GetMapping("/")
 	 public ModelAndView index() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("index");
 		return mv;
 	}
 	
-	@RequestMapping("/signup")
+	@GetMapping("/signup")
 	public ModelAndView signup() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("signup");
 		return mv;
 	}
 	
-	@RequestMapping("/login")
+	@GetMapping("/login")
 	public ModelAndView login() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("login");

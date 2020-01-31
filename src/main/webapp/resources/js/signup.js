@@ -21,6 +21,21 @@ $(document).ready(function(){
 		*	실패 시 페이지 Reload
 		*/
 		
+		$.ajax({
+	        url: "/user",
+	        method: "POST",
+	        dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(param)
+	    }).then(function(data) {	    	
+	    	document.cookie = "accesstoken=" + data.data.token;
+	    	document.cookie = "userId=" + data.data.userId;
+	    	window.location.href = '/login';
+	    }, function(err) {
+	    	alert("계정 정보를 확인해주세요.");
+	    	window.location.reload();
+	    });
+		
 		return false;
 	});
 });

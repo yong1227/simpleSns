@@ -14,7 +14,7 @@ $(document).ready(function() {
 		$.ajax({
 			url : "/user?id=" + getCookie("userId")
 		}).then(function(data) {
-			console.log(data);
+			console.log('index data'+data);
 			console.log(data.data.username);
 			$('#username').text(data.data.username);
 		}, function(err) {
