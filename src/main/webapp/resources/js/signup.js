@@ -15,6 +15,7 @@ $(document).ready(function(){
 				password: password
 		}
 		
+		console.log("param : "+param);
 		$.ajax({
 	        url: "/user",
 	        method: "POST",
@@ -27,6 +28,8 @@ $(document).ready(function(){
 	    	window.location.href = '/login';
 	    }, function(err) {
 	    	console.log("f");
+	    	alert("param : "+ param.password);
+	    	console.log("err : "+err);
 	    	alert("Username이 중복되었습니다.");
 	    	window.location.reload();
 	    });
