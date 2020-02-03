@@ -93,17 +93,23 @@ public class PostController {
 		
 		logger.info("accesstoken : "+accesstoken);
 		
-		tokenVO.setToken(accesstoken);
+//		tokenVO.setToken(accesstoken);
+//		
+//		tokenVO =  userService.findTokenByToken(tokenVO);
+//		
+//		Long userId = tokenVO.getUserId();
+//		logger.info("userId : "+ userId);
+//		
+//		postAndUserVO.setUserId(userId);
+//		logger.info("postAndUserVO : "+ postAndUserVO);
+//		
+//		List<PostAndUserVO> posts = postService.findPostAndUserByUserId(postAndUserVO);
+//		
+//		for (PostAndUserVO post : posts) {
+//			logger.info("post : " + post);
+//		}
 		
-		tokenVO =  userService.findTokenByToken(tokenVO);
-		
-		Long userId = tokenVO.getUserId();
-		logger.info("userId : "+ userId);
-		
-		postAndUserVO.setUserId(userId);
-		logger.info("postAndUserVO : "+ postAndUserVO);
-		
-		List<PostAndUserVO> posts = postService.findPostAndUserByUserId(postAndUserVO);
+		List<PostAndUserVO> posts = postService.findPostAndUserByToken(accesstoken);
 		
 		for (PostAndUserVO post : posts) {
 			logger.info("post : " + post);

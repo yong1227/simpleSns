@@ -30,4 +30,8 @@ public class PostService {
 	public List<PostAndUserVO> findPostAndUserByUserId(PostAndUserVO postAndUserVO){
 		return postDAO.findPostAndUserByUserId(postAndUserVO);
 	}
+	
+	public List<PostAndUserVO> findPostAndUserByToken(String token){
+		return postDAO.findPostAndUserByToken(token);
+	}
 }

@@ -29,7 +29,7 @@
 		<result property="createdAt" column="created_at" />
 		<association property="user" resultMap="userResult" />
 	</resultMap>
-	
+
 	<insert id="insertPost" parameterType="postVO"
 		useGeneratedKeys="true" keyProperty="id">
 		<![CDATA[
@@ -52,12 +52,21 @@
 		]]>
 	</select>
 
-	<select id="findPostAndUserByUserId" parameterType="Long" 
+	<select id="findPostAndUserByUserId" parameterType="Long"
 		resultMap="postAndUserResult">
 		<![CDATA[
 			select * from test.post inner join test.user on test.post.user_id = test.user.id
 			where test.post.user_id=#{userId}
 			order by post.created_at desc
+		]]>
+	</select>
+
+	<select id="findPostAndUserByToken" parameterType="String"
+		resultMap="postAndUserResult">
+		<![CDATA[
+			select post.id, post.user_id, post.title, post.content, post.created_at, user.id, user.username, user.password, user.created_at
+			from post join user on post.user_id = user.id
+			join token on post.user_id = token.user_id where token.token=#{token} group by post.id order by post.created_at desc
 		]]>
 	</select>
 

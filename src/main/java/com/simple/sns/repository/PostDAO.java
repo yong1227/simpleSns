@@ -34,4 +34,9 @@ public class PostDAO {
 	public List<PostAndUserVO> findPostAndUserByUserId(PostAndUserVO postAndUserVO){
 		return sqlSession.selectList("mapper.post.findPostAndUserByUserId", postAndUserVO);
 	}
+	
+	//findPostAndUserByToken
+	public List<PostAndUserVO> findPostAndUserByToken(String token){
+		return sqlSession.selectList("mapper.post.findPostAndUserByToken", token);
+	}
 }
