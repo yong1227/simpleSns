@@ -4,8 +4,9 @@
 
 <configuration>
 	<typeAliases>
-		<!-- alias를 설정합니다. -->
 		<typeAlias type="com.simple.sns.domain.UserVO"  alias="userVO" />
 		<typeAlias type="com.simple.sns.domain.TokenVO"  alias="tokenVO" />
+		<typeAlias type="com.simple.sns.domain.PostVO"  alias="postVO" />
+		<typeAlias type="com.simple.sns.domain.PostAndUserVO"  alias="postAndUserVO" />
 	</typeAliases>
 </configuration>

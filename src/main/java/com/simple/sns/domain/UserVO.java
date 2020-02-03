@@ -3,11 +3,14 @@ package com.simple.sns.domain;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Component
 public class UserVO {
 
 	private Long id;
 	private String username;
+	@JsonIgnore
 	private String password;
 	private String createdAt;
 	
@@ -49,7 +52,8 @@ public class UserVO {
 
 	@Override
 	public String toString() {
-		return "UserVO [id=" + id + ", username=" + username + ", password=" + password + ", createdAt=" + createdAt
+		return "UserVO [id=" + id + ", username=" + username + ", createdAt=" + createdAt
 				+ "]";
 	}
+
 }

@@ -15,27 +15,21 @@ $(document).ready(function(){
 				password: password
 		}
 		
-		/*
-		*	POST /user API 연동 Ajax 코드 작성
-		*   성공 시 "회원 가입이 되었습니다." 얼럿 후 /login 페이지로 redirection
-		*	실패 시 페이지 Reload
-		*/
-		
 		$.ajax({
 	        url: "/user",
 	        method: "POST",
 	        dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify(param)
-	    }).then(function(data) {	    	
-	    	document.cookie = "accesstoken=" + data.data.token;
-	    	document.cookie = "userId=" + data.data.userId;
+	    }).then(function(data) {
+	    	console.log("s");
+	    	alert("회원 가입이 되었습니다.");
 	    	window.location.href = '/login';
 	    }, function(err) {
-	    	alert("계정 정보를 확인해주세요.");
+	    	console.log("f");
+	    	alert("Username이 중복되었습니다.");
 	    	window.location.reload();
 	    });
-		
 		return false;
 	});
 });

@@ -2,6 +2,7 @@ package com.simple.sns.controller;
 
 import java.util.List;
 
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class UserController {
 	// 모든 user
 	@GetMapping("/userAll")
 	public ResponseResult findUsers() {
-		logger.info("listUsers() called");
+		logger.info("findUsers() called");
 		
 		List<UserVO> userList = userService.findUsers();
 		
@@ -54,14 +55,13 @@ public class UserController {
 	// id로 회원 정보 하나 조회 
 	@GetMapping("/user")
 	public ResponseResult findUserById(@RequestParam("id") Long id) throws Exception {
-		logger.info("getUserOne() called");
+		logger.info("findUserById() called");
 		
 		userVO = userService.findUserById(id);
 		
 		responseResult.setCode(HttpStatus.OK);
 		responseResult.setMessage("Success");
 		responseResult.setData(userVO);
-		
 		
 		return responseResult;
 	}
@@ -88,7 +88,7 @@ public class UserController {
 	// 회원 인증
 	@PostMapping("/auth")
 	public ResponseResult insertToken(@RequestBody UserVO userVO) throws Exception {
-		logger.info("auth() called");
+		logger.info("insertToken() called");
 		
 		//getUerId
 		userVO = userService.findUserByUsernameAndPassword(userVO);

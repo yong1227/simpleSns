@@ -6,56 +6,62 @@
 
 <mapper namespace="mapper.user">
 	<resultMap type="userVO" id="userResult">
-		<result property="id" column="id"/>
-		<result property="username" column="username"/>
-		<result property="password" column="password"/>
-		<result property="createdAt" column="created_at"/>
+		<result property="id" column="id" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="createdAt" column="created_at" />
 	</resultMap>
-	
+
 	<resultMap type="tokenVO" id="tokenResult">
-		<result property="token" column="token"/>
-		<result property="userId" column="user_id"/>
-		<result property="createdAt" column="created_at"/>
+		<result property="token" column="token" />
+		<result property="userId" column="user_id" />
+		<result property="createdAt" column="created_at" />
 	</resultMap>
-	
+
 	<select id="findUsers" resultMap="userResult">
-      <![CDATA[
-         select * from user
-      ]]>
+	    <![CDATA[
+	       select * from user
+	    ]]>
 	</select>
-	
-	<select id="findUserByUsernameAndPassword"  resultMap="userResult"   parameterType="userVO" >
-	<![CDATA[
-		select * from user	
-		where username=#{username} and password=#{password}		
-	]]>
-	</select>
-	
-	<select id="findUserById"  resultMap="userResult"   parameterType="Long" >
-	<![CDATA[
-		select * from user
-		where id=#{id}		
-	]]>
-	</select>
-	
-	<insert id="insertUser"  parameterType="userVO" keyProperty="id" useGeneratedKeys="true">
+
+	<select id="findUserByUsernameAndPassword"
+		resultMap="userResult" parameterType="userVO">
 		<![CDATA[
-		 insert into user(username, password)
-		 values(#{username}, #{password})
-		]]>      
-	</insert>
-	
-	<insert id="insertToken"  parameterType="tokenVO" useGeneratedKeys="true" keyProperty="token">
+			select * from user	
+			where username=#{username} and password=#{password}		
+		]]>
+	</select>
+
+	<select id="findUserById" resultMap="userResult"
+		parameterType="Long">
 		<![CDATA[
-		 insert into token(token, user_id)
-		 values(#{token}, #{userId})
-		]]>      
+			select * from user
+			where id=#{id}		
+		]]>
+	</select>
+
+	<insert id="insertUser" parameterType="userVO" keyProperty="id"
+		useGeneratedKeys="true">
+		<![CDATA[
+			 insert into user(username, password)
+			 values(#{username}, #{password})
+		]]>
 	</insert>
-	
-	<select id="findTokenByToken"  parameterType="String" resultMap="tokenResult">
+
+	<insert id="insertToken" parameterType="tokenVO"
+		useGeneratedKeys="true" keyProperty="token">
+		<![CDATA[
+			 insert into token(token, user_id)
+			 values(#{token}, #{userId})
+		]]>
+	</insert>
+
+	<select id="findTokenByToken" parameterType="String"
+		resultMap="tokenResult">
 		<![CDATA[
 			select * from token
 			where token=#{token}
-		]]>      
+		]]>
 	</select>
+
 </mapper>

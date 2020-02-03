@@ -6,14 +6,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class ResponseResult {
 
-	private String message;
 	private int code;
+	private String message;
 	private Object data;
 	
 	public ResponseResult() {
 		super();
 	}
 	
+	public ResponseResult(int code, String message, Object data) {
+		super();
+		this.code = code;
+		this.message = message;
+		this.data = data;
+	}
+
 	public String getMessage() {
 		return message;
 	}
@@ -35,6 +42,6 @@ public class ResponseResult {
 
 	@Override
 	public String toString() {
-		return "ResponseResult [message=" + message + ", code=" + code + ", data=" + data + "]";
+		return "ResponseResult [code=" + code + ", message=" + message + ", data=" + data + "]";
 	}
 }

@@ -23,7 +23,6 @@ $(document).ready(function(){
             data: JSON.stringify(param)
 	    }).then(function(data) {	    	
 	    	document.cookie = "accesstoken=" + data.data.token;
-	    	document.cookie = "userId=" + data.data.userId;
 	    	window.location.href = '/';
 	    }, function(err) {
 	    	alert("계정 정보를 확인해주세요.");

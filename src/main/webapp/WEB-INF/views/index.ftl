@@ -29,15 +29,44 @@ body {
 </head>
 
 <body>
-	<#include "/common/header.ftl">
+	<#include "header.ftl">
 
 	<div class="container">
 	
-		<h1> Welcome <span id="username"></span> </h1>
+		<#if user??>
+			<div class="my-5"></div>
+			<ul class="nav nav-tabs">
+				 <li class="nav-item">
+				 	<a class="nav-link active" data-toggle="tab" href="#myfeed">My Posts</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="tab" href="#posts">All Posts</a>
+				</li>
+			</ul>
+			
+				<div class="col-md-2"></div>
+				
+				<div class="tab-content">
+					<div class="col-md-2"></div>
+					<div class="container tab-pane active col-md-8" id="myfeed">
+						<h1 class="my-4"></h1>
+					</div>
+					<div class="container tab-pane fade col-md-8" id="posts">
+						<h1 class="my-4"></h1>
+					</div>
+				</div>
+		<#else>
+			<div class="row">
+				<div class="col-md-2"></div>
+				<div class="col-md-8" id="posts">
+					<h1 class="my-4"></h1>
+				</div>
+			</div>
+		</#if>
 		
 	</div>
 	
-	<#include "/common/footer.ftl">
+	<#include "footer.ftl">
 
 	<div class="modal fade" id="create_post_modal" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"

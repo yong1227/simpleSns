@@ -18,33 +18,28 @@ public class UserDAO {
 	
 	// 전체 조회
 	public List<UserVO> findUsers() throws DataAccessException{
-		List<UserVO> userList = null;
-		userList = sqlSession.selectList("mapper.user.findUsers");
-		return userList;
+		return sqlSession.selectList("mapper.user.findUsers");
 	}
 	
 	// 로그인
 	public UserVO findUserByUsernameAndPassword(UserVO userVO) throws DataAccessException{
-		UserVO vo = sqlSession.selectOne("mapper.user.findUserByUsernameAndPassword", userVO);
-		return vo;
+		return sqlSession.selectOne("mapper.user.findUserByUsernameAndPassword", userVO);
+		
 	}
 	
 	// 한 명만 조회
 	public UserVO findUserById(Long id) throws DataAccessException{
-		UserVO vo = sqlSession.selectOne("mapper.user.findUserById", id);
-		return vo;
+		return sqlSession.selectOne("mapper.user.findUserById", id);
 	}
 	
 	// 회원 가입
 	public int insertUser(UserVO userVO) throws DataAccessException{
-		int result = sqlSession.insert("mapper.user.insertUser",userVO);
-		return result;
+		return sqlSession.insert("mapper.user.insertUser",userVO);
 	}
 	
 	// 로그인 시 토큰 생성
 	public int insertToken(TokenVO tokenVO) {
-		int vo = sqlSession.insert("mapper.user.insertToken", tokenVO);
-		return vo;
+		return sqlSession.insert("mapper.user.insertToken", tokenVO);
 	}
 	
 	// 토큰 조회

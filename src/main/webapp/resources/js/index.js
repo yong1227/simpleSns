@@ -1,48 +1,137 @@
-$(document).ready(function() {
-
+$(document).ready(function(){
+	
 	var token;
-	if (document.cookie.includes("accesstoken")) {
-		token = document.cookie.split('token=')[1];
+	if(document.cookie.includes("accesstoken")) {
+		token = document.cookie.split('token=')[1];	
 	}
-
-	var userId;
-	if (document.cookie.includes("userId")) {
-		userId = document.cookie.split('userId=')[1];
-	}
-
-	if (userId) {
+	
+	$.ajax({
+		beforeSend: function(xhr){
+			xhr.setRequestHeader('accesstoken', token);
+        },
+        url: "/post"
+    }).then(function(data) {
+    	$.each(data.data, function(index, e) {
+    		$('#posts').append(
+    				'<div class="card mb-4"> <div class="card-body"> <h2 class="card-title">' + e.title 
+    				+ '</h2> <p class="card-text">' + e.content 
+    				+ '</p> <a href="/post/detail/' + e.id 
+    				+ '" class="btn btn-primary">Read More &rarr;</a> </div> ' 
+    				+ '<div class="card-footer text-muted"> Posted on ' + e.createdAt.split('T')[0]
+    				+ ' by ' + e.user.username
+    				+ '</div> </div>');
+    	});
+       console.log(data);
+    }, function(err) {
+    	console.log(err.responseJSON);
+    });
+	
+	
+	if(token) {
 		$.ajax({
-			url : "/user?id=" + getCookie("userId")
-		}).then(function(data) {
-			console.log('index data'+data);
-			console.log(data.data.username);
-			$('#username').text(data.data.username);
-		}, function(err) {
-			console.log(err.responseJSON);
-		});
+			beforeSend: function(xhr){
+				xhr.setRequestHeader('accesstoken', token);
+	        },
+	        url: "/post/my"
+	    }).then(function(data) {
+	    	$.each(data.data, function(index, e) {
+	    		$('#myfeed').append(
+	    				'<div class="card mb-4"> <div class="card-body"> <h2 class="card-title">' + e.title 
+	    				+ '</h2> <p class="card-text">' + e.content 
+	    				+ '</p> <a href="/post/detail/' + e.id 
+	    				+ '" class="btn btn-primary">Read More &rarr;</a> </div> ' 
+	    				+ '<div class="card-footer text-muted"> Posted on ' + e.createdAt.split('T')[0]
+	    				+ ' by ' + e.user.username
+	    				+ '</div> </div>');
+	    	});
+	       console.log(data);
+	    }, function(err) {
+	    	console.log(err.responseJSON);
+	    });
 	}
-
-	function getCookie(cname) {
-		var name = cname + "=";
-		var decodedCookie = decodeURIComponent(document.cookie);
-		var ca = decodedCookie.split(';');
-		for (var i = 0; i < ca.length; i++) {
-			var c = ca[i];
-			while (c.charAt(0) == ' ') {
-				c = c.substring(1);
-			}
-			if (c.indexOf(name) == 0) {
-				return c.substring(name.length, c.length);
-			}
+	
+	$('#save_post_btn').click(function(){
+		var title = $('#create_title_text').val();
+		var content = $('#create_content_text').val();
+		
+		console.log(title);
+		console.log(content);
+		
+		var param = {
+			title: title,
+			content: content
 		}
-		return "";
-	}
+		
+		$.ajax({
+			beforeSend: function(xhr){
+				xhr.setRequestHeader('accesstoken', token);
+	        },
+	        url: "/post",
+	        method: "POST",
+	        dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(param)
+	    }).then(function(data) {
+	    	window.location.href = '/';
+	    }, function(err) {
+	    	alert(err.responseJSON);
+	    });
+	});
 	
 	$('#header_logout_btn').click(function(){
 		document.cookie = "accesstoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-		document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-		window.location.href = '/login';
+		window.location.href = '/';
 	});
 	
+	$('body').on('click', '.follow', function($event) {
+		console.log($(event.target).html());
+		console.log($(this).html());
+		console.log($(this).attr('value'));
+		var userId = $(this).attr('value');
+		
+		var param = {
+			followeeId: userId
+		}
+		
+		$.ajax({
+			beforeSend: function(xhr){
+				xhr.setRequestHeader('accesstoken', token);
+	        },
+	        url: "/follow",
+	        method: "POST",
+	        dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(param)
+	    }).then(function(data) {
+	    	window.location.reload(); 	    
+	    }, function(err) {
+	    	alert(err.responseJSON);
+	    });
+	});
+	
+	$('body').on('click', '.unfollow', function() {
+		console.log("unfollow clicked!!!");
+		
+		var userId = $(this).attr('value');
+		
+		var param = {
+			followeeId: userId
+		}
+		
+		$.ajax({
+			beforeSend: function(xhr){
+				xhr.setRequestHeader('accesstoken', token);
+	        },
+	        url: "/follow",
+	        method: "DELETE",
+	        dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(param)
+	    }).then(function(data) {
+	    	window.location.reload();
+	    }, function(err) {
+	    	alert(err.responseJSON);
+	    });
+	});
 	
 });

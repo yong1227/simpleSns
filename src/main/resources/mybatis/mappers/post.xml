@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.post">
+
+	<resultMap type="userVO" id="userResult">
+		<result property="id" column="user_id" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="createdAt" column="created_at" />
+	</resultMap>
+
+	<resultMap type="postVO" id="postResult">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="createdAt" column="created_at" />
+	</resultMap>
+
+	<resultMap type="postAndUserVO" id="postAndUserResult">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="createdAt" column="created_at" />
+		<association property="user" resultMap="userResult" />
+	</resultMap>
+	
+	<insert id="insertPost" parameterType="postVO"
+		useGeneratedKeys="true" keyProperty="id">
+		<![CDATA[
+			insert into post (user_id, title, content) 
+			values (#{userId}, #{title}, #{content})
+		]]>
+	</insert>
+
+	<select id="findPostById" parameterType="Long"
+		resultMap="postResult">
+		<![CDATA[
+			select * from post
+			where id=#{id}
+		]]>
+	</select>
+
+	<select id="findPostsAndUser" resultMap="postAndUserResult">
+		<![CDATA[
+			select * from test.post inner join test.user on test.post.user_id = test.user.id order by post.created_at desc
+		]]>
+	</select>
+
+	<select id="findPostAndUserByUserId" parameterType="Long" 
+		resultMap="postAndUserResult">
+		<![CDATA[
+			select * from test.post inner join test.user on test.post.user_id = test.user.id
+			where test.post.user_id=#{userId}
+			order by post.created_at desc
+		]]>
+	</select>
+
+</mapper>
