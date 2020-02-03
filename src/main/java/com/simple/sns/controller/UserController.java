@@ -71,6 +71,8 @@ public class UserController {
 	public ResponseResult insertUser(@RequestBody UserVO userVO) throws Exception{
 		logger.info("insertUser() 메서드 호출");
 		
+		logger.info("userVO : " + userVO);
+		
 		userService.insertUser(userVO);
 
 		//responeData
@@ -90,9 +92,15 @@ public class UserController {
 	public ResponseResult insertToken(@RequestBody UserVO userVO) throws Exception {
 		logger.info("insertToken() called");
 		
+		logger.info("username : "+userVO.getUsername());
+		logger.info("password : "+userVO.getPassword());
+		
 		//getUerId
 		userVO = userService.findUserByUsernameAndPassword(userVO);
+		logger.info("userVO " + userVO);
 		Long userId = userVO.getId();
+		logger.info("userId : " +userId);
+		
 		
 		//token 생성
 		StringBuffer token = ramdomToken.makeToken();

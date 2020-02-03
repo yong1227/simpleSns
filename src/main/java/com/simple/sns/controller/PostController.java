@@ -93,27 +93,29 @@ public class PostController {
 		
 		logger.info("accesstoken : "+accesstoken);
 		
-//		tokenVO.setToken(accesstoken);
-//		
-//		tokenVO =  userService.findTokenByToken(tokenVO);
-//		
-//		Long userId = tokenVO.getUserId();
-//		logger.info("userId : "+ userId);
-//		
-//		postAndUserVO.setUserId(userId);
-//		logger.info("postAndUserVO : "+ postAndUserVO);
-//		
-//		List<PostAndUserVO> posts = postService.findPostAndUserByUserId(postAndUserVO);
-//		
-//		for (PostAndUserVO post : posts) {
-//			logger.info("post : " + post);
-//		}
+		tokenVO.setToken(accesstoken);
 		
-		List<PostAndUserVO> posts = postService.findPostAndUserByToken(accesstoken);
+		tokenVO =  userService.findTokenByToken(tokenVO);
+		
+		Long userId = tokenVO.getUserId();
+		logger.info("userId : "+ userId);
+		
+		postAndUserVO.setUserId(userId);
+		logger.info("postAndUserVO : "+ postAndUserVO);
+		
+		List<PostAndUserVO> posts = postService.findPostAndUserByUserId(postAndUserVO);
 		
 		for (PostAndUserVO post : posts) {
 			logger.info("post : " + post);
 		}
+		
+		
+		// post, user, token 3중 조인으로 token값에 의해서 findPostAndUser하기
+//		List<PostAndUserVO> posts = postService.findPostAndUserByToken(accesstoken);
+//		
+//		for (PostAndUserVO post : posts) {
+//			logger.info("post : " + post);
+//		}
 		
 		return new ResponseResult(HttpStatus.OK.value(), "Success", posts);
 	}
