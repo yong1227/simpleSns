@@ -101,7 +101,6 @@ public class UserController {
 		Long userId = userVO.getId();
 		logger.info("userId : " +userId);
 		
-		
 		//token 생성
 		StringBuffer token = ramdomToken.makeToken();
 		
@@ -114,7 +113,7 @@ public class UserController {
 		userService.insertToken(tokenVO);
 		
 		//select token
-		tokenVO = userService.findTokenByToken(tokenVO);
+		tokenVO = userService.findTokenByToken(tokenToString);
 		
 		//responseData
 		responseResult.setCode(HttpStatus.OK);

@@ -37,7 +37,7 @@ public class UserService {
 		return userDAO.insertToken(tokenVO);
 	}
 	
-	public TokenVO findTokenByToken(TokenVO tokenVO) {
-		return userDAO.findTokenByToken(tokenVO);
+	public TokenVO findTokenByToken(String token) {
+		return userDAO.findTokenByToken(token);
 	}
 }

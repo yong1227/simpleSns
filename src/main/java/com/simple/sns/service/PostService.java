@@ -15,8 +15,8 @@ public class PostService {
 	@Autowired
 	PostDAO postDAO;
 	
-	public int insertPost(PostVO postVO) {
-		return postDAO.insertPost(postVO);
+	public int insertPostByTitleAndContent(PostVO postVO) {
+		return postDAO.insertPostByTitleAndContent(postVO);
 	}
 	
 	public PostVO findPostById(Long id) {
@@ -34,4 +34,17 @@ public class PostService {
 	public List<PostAndUserVO> findPostAndUserByToken(String token){
 		return postDAO.findPostAndUserByToken(token);
 	}
+	
+	public PostAndUserVO findPostAndUserByPostId(Long postId) {
+		return postDAO.findPostAndUserByPostId(postId);
+	}
+
+	public void deletePostByPostId(Long postId) {
+		postDAO.deletePostByPostId(postId);
+	}
+
+	public int updatePostTitleAndContent(PostVO postVO) {
+		return postDAO.updatePostTitleAndContent(postVO);
+	}
+	
 }

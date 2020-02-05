@@ -1,36 +1,37 @@
 $(document).ready(function(){
-	
 	var token;
 	if(document.cookie.includes("accesstoken")) {
 		token = document.cookie.split('token=')[1];	
 	}
 	
-	$.ajax({
-		beforeSend: function(xhr){
-			xhr.setRequestHeader('accesstoken', token);
-        },
-        url: "/post"
-    }).then(function(data) {
-    	$.each(data.data, function(index, e) {
-    		$('#posts').append(
-    				'<div class="card mb-4"> <div class="card-body"> <h2 class="card-title">' + e.title 
-    				+ '</h2> <p class="card-text">' + e.content 
-    				+ '</p> <a href="/post/detail/' + e.id 
-    				+ '" class="btn btn-primary">Read More &rarr;</a> </div> ' 
-    				+ '<div class="card-footer text-muted"> Posted on ' + e.createdAt.split('T')[0]
-    				+ ' by ' + e.user.username
-    				+ '</div> </div>');
-    	});
-       console.log(data);
-    }, function(err) {
-    	console.log(err.responseJSON);
-    });
-	
+		$.ajax({
+			beforeSend: function(xhr){
+				xhr.setRequestHeader('accesstoken', token);
+				console.log('token : '+token);
+	        },
+	        url: "/post"
+	    }).then(function(data) {
+	    	$.each(data.data, function(index, e) {
+	    		$('#posts').append(
+	    				'<div class="card mb-4"> <div class="card-body"> <h2 class="card-title">' + e.title 
+	    				+ '</h2> <p class="card-text">' + e.content 
+	    				+ '</p> <a href="/post/detail/' + e.id 
+	    				+ '" class="btn btn-primary">Read More &rarr;</a> </div> ' 
+	    				+ '<div class="card-footer text-muted"> Posted on ' + e.createdAt.split('T')[0]
+	    				+ ' by ' + e.user.username
+	    				+ '</div> </div>');
+	    	});
+	       console.log('get postAll : ', data);
+	    }, function(err) {
+	    	console.log(err.responseJSON);
+	    })
+    ;
 	
 	if(token) {
 		$.ajax({
 			beforeSend: function(xhr){
 				xhr.setRequestHeader('accesstoken', token);
+				console.log('token true called');
 	        },
 	        url: "/post/my"
 	    }).then(function(data) {
@@ -44,7 +45,7 @@ $(document).ready(function(){
 	    				+ ' by ' + e.user.username
 	    				+ '</div> </div>');
 	    	});
-	       console.log(data);
+	       console.log('get post/my : ', data);
 	    }, function(err) {
 	    	console.log(err.responseJSON);
 	    });

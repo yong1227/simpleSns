@@ -43,7 +43,7 @@ public class UserDAO {
 	}
 	
 	// 토큰 조회
-	public TokenVO findTokenByToken(TokenVO token) {
+	public TokenVO findTokenByToken(String token) {
 		return sqlSession.selectOne("mapper.user.findTokenByToken", token);
 	}
 }

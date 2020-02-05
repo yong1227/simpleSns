@@ -30,7 +30,7 @@
 		<association property="user" resultMap="userResult" />
 	</resultMap>
 
-	<insert id="insertPost" parameterType="postVO"
+	<insert id="insertPostByTitleAndContent" parameterType="postVO"
 		useGeneratedKeys="true" keyProperty="id">
 		<![CDATA[
 			insert into post (user_id, title, content) 
@@ -43,6 +43,14 @@
 		<![CDATA[
 			select * from post
 			where id=#{id}
+		]]>
+	</select>
+	
+	<select id="findPostAndUserByPostId" parameterType="Long"
+		resultMap="postAndUserResult">
+		<![CDATA[
+			select * from test.post inner join test.user on test.post.user_id = test.user.id
+			where post.id=#{postId}
 		]]>
 	</select>
 
@@ -69,5 +77,15 @@
 			join token on post.user_id = token.user_id where token.token=#{token} group by post.id order by post.created_at desc
 		]]>
 	</select>
+	
+	<update id="updatePostTitleAndContent" parameterType="postVO">
+		update post set title=#{title}, content=#{content} where id = #{id};
+	</update>
+	
+	<delete id="deletePostByPostId" parameterType="Long">
+		<![CDATA[
+			delete from post where id=#{postId};
+		]]>
+	</delete>
 
 </mapper>

@@ -16,8 +16,8 @@ public class PostDAO {
 	private SqlSession sqlSession;
 	
 	// insert post
-	public int insertPost(PostVO postVO) {
-		return sqlSession.insert("mapper.post.insertPost", postVO);
+	public int insertPostByTitleAndContent(PostVO postVO) {
+		return sqlSession.insert("mapper.post.insertPostByTitleAndContent", postVO);
 	}
 
 	// findPostById
@@ -38,5 +38,17 @@ public class PostDAO {
 	//findPostAndUserByToken
 	public List<PostAndUserVO> findPostAndUserByToken(String token){
 		return sqlSession.selectList("mapper.post.findPostAndUserByToken", token);
+	}
+	
+	public PostAndUserVO findPostAndUserByPostId(Long postId) {
+		return sqlSession.selectOne("mapper.post.findPostAndUserByPostId", postId);
+	}
+
+	public void deletePostByPostId(Long postId) {
+		sqlSession.delete("mapper.post.deletePostByPostId",postId);
+	}
+
+	public int updatePostTitleAndContent(PostVO postVO) {
+		return sqlSession.update("mapper.post.updatePostTitleAndContent", postVO);
 	}
 }

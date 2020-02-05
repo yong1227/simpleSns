@@ -1,9 +1,7 @@
 package com.simple.sns.domain;
 
-
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -57,5 +55,4 @@ public class UserVO {
 		return "UserVO [id=" + id + ", username=" + username + ", createdAt=" + createdAt
 				+ "]";
 	}
-
 }

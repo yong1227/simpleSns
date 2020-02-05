@@ -63,5 +63,13 @@
 			where token=#{token}
 		]]>
 	</select>
+	
+	<!-- 토큰을 이용해서 유저찾기 (임시) -->
+	<select id="findUserByToken" parameterType="String"
+		resultMap="userResult">
+		<![CDATA[
+			select * from token join user on token.user_id = user.id where token.token = 'f4N7P89yx598O2uM6hTL';
+		]]>
+	</select>
 
 </mapper>

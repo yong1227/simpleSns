@@ -1,4 +1,8 @@
 $(document).ready(function(){
+	if(document.cookie.includes("accesstoken")) {
+		token = document.cookie.split('token=')[1];	
+	}
+	
 	var postId = $('#detail_post_id').attr("value");
 	postId = postId.replace(/,/g, "");
 	console.log("postId - " + postId);
@@ -31,12 +35,14 @@ $(document).ready(function(){
 	
 	
 	$('#detail_delete_btn').click(function(){
+		console.log('delete btn');
 		var postId = $('#detail_post_id').attr("value");
 		console.log("delete button click! - " + postId);
 		$.ajax({
 	        url: "/post/"+postId,
 	        method: "DELETE"
 	    }).then(function(data) {
+	    	alert(data.message);
 	    	window.location.href = '/';
 	    }, function(err) {
 	    	alert(err.responseJSON);
@@ -44,13 +50,14 @@ $(document).ready(function(){
 	});
 	
 	$('#modify_post_btn').click(function(){
+		console.log('modifiy btn');
 		var postId = $('#detail_post_id').attr("value");
 		var title = $('#modify_title_text').val();
 		var content = $('#modify_content_text').val();
 		
-		console.log(postId);
-		console.log(title);
-		console.log(content);
+		console.log('postId :'+ postId);
+		console.log('title : '+ title);
+		console.log('content : '+ content);
 		
 		var param = {
 			id: postId,
@@ -65,7 +72,8 @@ $(document).ready(function(){
             contentType: 'application/json',
             data: JSON.stringify(param)
 	    }).then(function(data) {
-	    	window.location.href = '/page/detail/'+postId;
+	    	alert(data.message);
+	    	window.location.href = '/post/detail/'+postId;
 	    }, function(err) {
 	    	alert(err.responseJSON);
 	    });
