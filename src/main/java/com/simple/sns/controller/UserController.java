@@ -33,9 +33,6 @@ public class UserController {
 	ResponseResult responseResult;
 	
 	@Autowired
-	RandomToken ramdomToken;
-	
-	@Autowired
 	TokenVO tokenVO;
 	
 	// 모든 user
@@ -102,7 +99,7 @@ public class UserController {
 		logger.info("userId : " +userId);
 		
 		//token 생성
-		StringBuffer token = ramdomToken.makeToken();
+		StringBuffer token = RandomToken.makeToken();
 		
 		//token toString
 		String tokenToString = token.toString();

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.token">
+
+	<resultMap type="tokenVO" id="tokenResult">
+		<result property="token" column="token" />
+		<result property="userId" column="user_id" />
+		<result property="createdAt" column="created_at" />
+	</resultMap>
+
+	<insert id="insertToken" parameterType="tokenVO"
+		useGeneratedKeys="true" keyProperty="token">
+		<![CDATA[
+			 insert into token(token, user_id)
+			 values(#{token}, #{userId})
+		]]>
+	</insert>
+
+	<select id="findTokenByToken" parameterType="String"
+		resultMap="tokenResult">
+		<![CDATA[
+			select * from token
+			where token=#{token}
+		]]>
+	</select>
+
+</mapper>

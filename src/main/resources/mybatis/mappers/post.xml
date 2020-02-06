@@ -10,7 +10,7 @@
 		<result property="id" column="user_id" />
 		<result property="username" column="username" />
 		<result property="password" column="password" />
-		<result property="createdAt" column="created_at" />
+		<result property="createdAt" column="user_created_at" />
 	</resultMap>
 
 	<resultMap type="postVO" id="postResult">
@@ -49,21 +49,21 @@
 	<select id="findPostAndUserByPostId" parameterType="Long"
 		resultMap="postAndUserResult">
 		<![CDATA[
-			select * from test.post inner join test.user on test.post.user_id = test.user.id
+			select post.id, user_id, title, content, post.created_at, user.id, username, password, user.created_at as user_created_at from test.post inner join test.user on test.post.user_id = test.user.id
 			where post.id=#{postId}
 		]]>
 	</select>
 
 	<select id="findPostsAndUser" resultMap="postAndUserResult">
 		<![CDATA[
-			select * from test.post inner join test.user on test.post.user_id = test.user.id order by post.created_at desc
+			select post.id, user_id, title, content, post.created_at, user.id, username, password, user.created_at as user_created_at from test.post inner join test.user on test.post.user_id = test.user.id order by post.created_at desc
 		]]>
 	</select>
 
 	<select id="findPostAndUserByUserId" parameterType="Long"
 		resultMap="postAndUserResult">
 		<![CDATA[
-			select * from test.post inner join test.user on test.post.user_id = test.user.id
+			select post.id, user_id, title, content, post.created_at, user.id, username, password, user.created_at as user_created_at from test.post inner join test.user on test.post.user_id = test.user.id
 			where test.post.user_id=#{userId}
 			order by post.created_at desc
 		]]>
@@ -72,7 +72,7 @@
 	<select id="findPostAndUserByToken" parameterType="String"
 		resultMap="postAndUserResult">
 		<![CDATA[
-			select post.id, post.user_id, post.title, post.content, post.created_at, user.id, user.username, user.password, user.created_at
+			select post.id, post.user_id, post.title, post.content, post.created_at, user.id, user.username, user.password, user.created_at as user_created_at
 			from post join user on post.user_id = user.id
 			join token on post.user_id = token.user_id where token.token=#{token} group by post.id order by post.created_at desc
 		]]>

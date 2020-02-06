@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.simple.sns.domain.TokenVO;
@@ -31,8 +30,7 @@ public class MainController {
 	 public ModelAndView index(@CookieValue(value = "accesstoken", required = false) String accesstoken) throws Exception {
 		logger.info("index called");
 		logger.info("accesstoken : "+ accesstoken);
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("index");
+		ModelAndView mv = new ModelAndView("index");
 		
 		if( accesstoken != null ) {
 			tokenVO = userService.findTokenByToken(accesstoken);
@@ -48,23 +46,20 @@ public class MainController {
 	
 	@GetMapping("/signup")
 	public ModelAndView signup() {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("signup");
+		ModelAndView mv = new ModelAndView("signup");
 		return mv;
 	}
 	
 	@GetMapping("/login")
 	public ModelAndView login() {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("login");
+		ModelAndView mv = new ModelAndView("login");
 		return mv;
 	}
 	
 	@GetMapping("/post/detail/{id}")
 	public ModelAndView postDetail(@PathVariable("id") Long id, @CookieValue(value = "accesstoken", required = false) String accesstoken) throws Exception {
 		logger.info("postDetail called");
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("detail");
+		ModelAndView mv = new ModelAndView("detail");
 		logger.info("accesstoken : "+ accesstoken);
 
 		if( accesstoken != null ) {

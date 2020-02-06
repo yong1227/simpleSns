@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.simple.sns.domain.PostAndUserVO;
 import com.simple.sns.domain.TokenVO;
 import com.simple.sns.domain.UserVO;
 import com.simple.sns.repository.UserDAO;

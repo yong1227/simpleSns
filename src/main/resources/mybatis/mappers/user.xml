@@ -48,23 +48,7 @@
 		]]>
 	</insert>
 
-	<insert id="insertToken" parameterType="tokenVO"
-		useGeneratedKeys="true" keyProperty="token">
-		<![CDATA[
-			 insert into token(token, user_id)
-			 values(#{token}, #{userId})
-		]]>
-	</insert>
-
-	<select id="findTokenByToken" parameterType="String"
-		resultMap="tokenResult">
-		<![CDATA[
-			select * from token
-			where token=#{token}
-		]]>
-	</select>
-	
-	<!-- 토큰을 이용해서 유저찾기 (임시) -->
+	<!-- (임시) -->
 	<select id="findUserByToken" parameterType="String"
 		resultMap="userResult">
 		<![CDATA[

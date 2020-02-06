@@ -2,12 +2,9 @@ package com.simple.sns.util;
 
 import java.util.Random;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class RandomToken {
 
-	public StringBuffer makeToken() {
+	public static StringBuffer makeToken() {
 		
 		StringBuffer temp = new StringBuffer();
 		Random rnd = new Random();

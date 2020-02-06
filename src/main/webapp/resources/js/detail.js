@@ -1,8 +1,8 @@
 $(document).ready(function(){
+	var token;
 	if(document.cookie.includes("accesstoken")) {
 		token = document.cookie.split('token=')[1];	
 	}
-	
 	var postId = $('#detail_post_id').attr("value");
 	postId = postId.replace(/,/g, "");
 	console.log("postId - " + postId);
@@ -105,5 +105,38 @@ $(document).ready(function(){
 	    }, function(err) {
 	    	alert(err.responseJSON);
 	    });
+	});
+	
+	$('#save_post_btn').click(function(){
+		var title = $('#create_title_text').val();
+		var content = $('#create_content_text').val();
+		
+		console.log(title);
+		console.log(content);
+		
+		var param = {
+			title: title,
+			content: content
+		}
+		
+		$.ajax({
+			beforeSend: function(xhr){
+				xhr.setRequestHeader('accesstoken', token);
+	        },
+	        url: "/post",
+	        method: "POST",
+	        dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(param)
+	    }).then(function(data) {
+	    	window.location.href = '/';
+	    }, function(err) {
+	    	alert(err.responseJSON);
+	    });
+	});
+	
+	$('#header_logout_btn').click(function(){
+		document.cookie = "accesstoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+		window.location.href = '/';
 	});
 });
