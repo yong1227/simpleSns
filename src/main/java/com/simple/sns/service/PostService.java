@@ -23,7 +23,7 @@ public class PostService {
 		return postDAO.findPostById(id);
 	}
 	
-	public List<PostAndUserVO> findPostsAndUser(){
+	public List<PostVO> findPostsAndUser(){
 		return postDAO.findPostsAndUser();
 	}
 	

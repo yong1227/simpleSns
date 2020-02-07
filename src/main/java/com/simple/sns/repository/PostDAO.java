@@ -23,7 +23,7 @@ public class PostDAO {
 		return sqlSession.selectOne("mapper.post.findPostById", id);
 	}
 	
-	public List<PostAndUserVO> findPostsAndUser(){
+	public List<PostVO> findPostsAndUser(){
 		return sqlSession.selectList("mapper.post.findPostsAndUser");
 	}
 	

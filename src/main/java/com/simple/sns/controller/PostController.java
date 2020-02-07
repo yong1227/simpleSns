@@ -51,7 +51,7 @@ public class PostController {
 
 	@PostMapping("/post")
 	public ResponseResult insertPostByTitleAndContent(@RequestBody PostVO postVO,
-			@RequestHeader(value = "accesstoken") String accesstoken) {
+			@CookieValue(value = "accesstoken") String accesstoken) {
 		logger.info("insertPostByTitleAndContent() called");
 
 		logger.info("accesstoken : " + accesstoken);
@@ -77,7 +77,7 @@ public class PostController {
 	public ResponseResult findPostsAndUser() {
 		logger.info("findPostsAndUser called");
 
-		List<PostAndUserVO> posts = new ArrayList<PostAndUserVO>();
+		List<PostVO> posts = new ArrayList<PostVO>();
 
 		posts = postService.findPostsAndUser();
 
@@ -86,7 +86,7 @@ public class PostController {
 
 	@GetMapping("/post/my")
 	public ResponseResult findPostAndUserByToken(
-			@RequestHeader(value = "accesstoken", required = false) String accesstoken) {
+			@CookieValue(value = "accesstoken", required = false) String accesstoken) {
 
 		logger.info("findPostAndUserByToken called");
 
