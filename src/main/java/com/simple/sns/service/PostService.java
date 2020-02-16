@@ -48,17 +48,21 @@ public class PostService {
 			if(countFolloweeId == 0) {
 				findPostsAndUserVO.getUser().setIsFollow(false);
 			}else {
-				List<FollowVO> followVOs =  followDAO.findFollowVOsByFollowerId(userId);
-				
-				for (FollowVO followVO : followVOs) {
-					Long followeeIdByFollowVO = followVO.getFolloweeId();
-					Long followeeIdByPostAndUserVO =  findPostsAndUserVO.getUserId();
+				if(findPostsAndUserVO.getUserId() == userId){
+					findPostsAndUserVO.getUser().setIsFollow(null);
+				}else {
+					List<FollowVO> followVOs =  followDAO.findFollowVOsByFollowerId(userId);
 					
-					if (followeeIdByPostAndUserVO == followeeIdByFollowVO) {
-						findPostsAndUserVO.getUser().setIsFollow(true);
-						break;
-					} else {
-						findPostsAndUserVO.getUser().setIsFollow(false);
+					for (FollowVO followVO : followVOs) {
+						Long followeeIdByFollowVO = followVO.getFolloweeId();
+						Long followeeIdByPostAndUserVO =  findPostsAndUserVO.getUserId();
+						
+						if (followeeIdByPostAndUserVO == followeeIdByFollowVO) {
+							findPostsAndUserVO.getUser().setIsFollow(true);
+							break;
+						} else {
+							findPostsAndUserVO.getUser().setIsFollow(false);
+						}
 					}
 				}
 			}	
@@ -95,17 +99,23 @@ public class PostService {
 		TokenVO tokenVO = userDAO.findTokenByToken(accesstoken);
 		Long userId = tokenVO.getUserId();
 		List<PostAndUserVO> postAndUserVOs = postDAO.findMyPostAndUserAndMyFollowerByUserId(userId);
-		logger.info("postAndUserVOs : "+ postAndUserVOs);
 		
 		for (PostAndUserVO postAndUserVO : postAndUserVOs) {
 			if(postAndUserVO.getUserId() == userId ) {
 				postAndUserVO.getUser().setIsFollow(null);
 				break;
 			}else {
-				postAndUserVO.getUser().setIsFollow(true);
+				List<FollowVO> followVOs =  followDAO.findFollowVOsByFollowerId(userId);
+				for (FollowVO followVO : followVOs) {
+					if (postAndUserVO.getUserId() ==  followVO.getFolloweeId()) {
+						postAndUserVO.getUser().setIsFollow(true);
+						break;
+					}else {
+						postAndUserVO.getUser().setIsFollow(false);
+					}
+				}
 			}
 		}
-		
 		return new ResponseResult(HttpStatus.OK.value(), "Success", postAndUserVOs ); 
 	}
 }
