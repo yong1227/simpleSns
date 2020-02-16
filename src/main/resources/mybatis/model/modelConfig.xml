@@ -8,5 +8,7 @@
 		<typeAlias type="com.simple.sns.domain.TokenVO"  alias="tokenVO" />
 		<typeAlias type="com.simple.sns.domain.PostVO"  alias="postVO" />
 		<typeAlias type="com.simple.sns.domain.PostAndUserVO"  alias="postAndUserVO" />
+		<typeAlias type="com.simple.sns.domain.FollowVO"  alias="followVO" />
+		<typeAlias type="com.simple.sns.domain.FeedVO"  alias="feedVO" />
 	</typeAliases>
 </configuration>

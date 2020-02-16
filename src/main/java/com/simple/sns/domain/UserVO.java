@@ -13,6 +13,7 @@ public class UserVO {
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	private String createdAt;
+	private Boolean isFollow;
 	
 	public UserVO() {
 		super();
@@ -50,9 +51,17 @@ public class UserVO {
 		this.createdAt = createdAt;
 	}
 
+	public Boolean getIsFollow() {
+		return isFollow;
+	}
+
+	public void setIsFollow(Boolean isFollow) {
+		this.isFollow = isFollow;
+	}
+
 	@Override
 	public String toString() {
-		return "UserVO [id=" + id + ", username=" + username + ", createdAt=" + createdAt
+		return "UserVO [id=" + id + ", username=" + username + ", createdAt=" + createdAt + ", isFollow=" + isFollow
 				+ "]";
 	}
 }

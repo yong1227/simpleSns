@@ -21,7 +21,7 @@ $(document).ready(function(){
 	        dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify(param)
-	    }).then(function(data) {	
+	    }).then(function(data) {	    	
 	    	document.cookie = "accesstoken=" + data.data.token;
 	    	window.location.href = '/';
 	    }, function(err) {

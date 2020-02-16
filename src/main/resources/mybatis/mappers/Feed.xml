@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.feed">
+	
+	<insert id="insertFeed" parameterType="feedVO">
+		<![CDATA[
+			 INSERT INTO feed(user_id, followee_id, post_id)
+			 values(#{userId}, #{followeeId}, #{postId})
+		]]>
+	</insert>
+</mapper>

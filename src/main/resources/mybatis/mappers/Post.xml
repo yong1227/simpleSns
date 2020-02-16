@@ -45,7 +45,7 @@
 			where id=#{id}
 		]]>
 	</select>
-	
+
 	<select id="findPostAndUserByPostId" parameterType="Long"
 		resultMap="postAndUserResult">
 		<![CDATA[
@@ -54,38 +54,65 @@
 		]]>
 	</select>
 
+	<select id="findPostsAndUserWithIsFollow" resultMap="postAndUserResult" parameterType="Long">
+		<![CDATA[
+			select post.id, user_id, title, content, post.created_at, user.id, username, password, user.created_at as user_created_at 
+			from test.post 
+			inner join test.user on test.post.user_id = test.user.id 
+			group by post.id
+			order by post.created_at desc
+		]]>
+	</select>
+	
 	<select id="findPostsAndUser" resultMap="postAndUserResult">
 		<![CDATA[
-			select post.id, user_id, title, content, post.created_at, user.id, username, password, user.created_at as user_created_at from test.post inner join test.user on test.post.user_id = test.user.id order by post.created_at desc
+			select post.id, user_id, title, content, post.created_at, user.id, username, password, user.created_at as user_created_at 
+			from test.post 
+			inner join test.user on test.post.user_id = test.user.id 
+			group by post.id
+			order by post.created_at desc
 		]]>
 	</select>
 
 	<select id="findPostAndUserByUserId" parameterType="Long"
 		resultMap="postAndUserResult">
 		<![CDATA[
-			select post.id, user_id, title, content, post.created_at, user.id, username, password, user.created_at as user_created_at from test.post inner join test.user on test.post.user_id = test.user.id
+			select post.id, user_id, title, content, post.created_at, user.id, username, password, user.created_at as user_created_at 
+			from test.post 
+			inner join test.user on test.post.user_id = test.user.id
 			where test.post.user_id=#{userId}
 			order by post.created_at desc
 		]]>
 	</select>
 
-	<select id="findPostAndUserByToken" parameterType="String"
-		resultMap="postAndUserResult">
-		<![CDATA[
-			select post.id, post.user_id, post.title, post.content, post.created_at, user.id, user.username, user.password, user.created_at as user_created_at
-			from post join user on post.user_id = user.id
-			join token on post.user_id = token.user_id where token.token=#{token} group by post.id order by post.created_at desc
-		]]>
-	</select>
-	
+	<!-- <select id="findPostAndUserByToken" parameterType="String" resultMap="postAndUserResult"> 
+		<![CDATA[ select post.id, post.user_id, post.title, post.content, post.created_at, 
+		user.id, user.username, user.password, user.created_at as user_created_at 
+		from post join user on post.user_id = user.id join token on post.user_id 
+		= token.user_id where token.token=#{token} group by post.id order by post.created_at 
+		desc ]]> </select> -->
+
 	<update id="updatePostTitleAndContent" parameterType="postVO">
-		update post set title=#{title}, content=#{content} where id = #{id};
+		update post
+		set title=#{title}, content=#{content} where id = #{id};
 	</update>
-	
+
 	<delete id="deletePostByPostId" parameterType="Long">
 		<![CDATA[
 			delete from post where id=#{postId};
 		]]>
 	</delete>
 
+	<select id="findMyPostAndUserAndMyFollowerByUserId" parameterType="Long"
+		resultMap="postAndUserResult">
+		<![CDATA[
+			SELECT post.id, post.user_id, title, content, post.created_at, user.id, username, password, user.created_at as user_created_at 
+			FROM post 
+			JOIN user on post.user_id = user.id
+			JOIN feed on post.id = feed.post_id
+			WHERE feed.user_id = #{postId}
+			GROUP BY post.id 
+			ORDER BY post.created_at desc
+		]]>
+	</select>
 </mapper>

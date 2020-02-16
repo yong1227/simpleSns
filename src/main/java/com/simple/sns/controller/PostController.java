@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.simple.sns.domain.PostAndUserVO;
@@ -21,6 +20,7 @@ import com.simple.sns.domain.PostVO;
 import com.simple.sns.domain.ResponseResult;
 import com.simple.sns.domain.TokenVO;
 import com.simple.sns.domain.UserVO;
+import com.simple.sns.service.FeedService;
 import com.simple.sns.service.PostService;
 import com.simple.sns.service.UserService;
 
@@ -33,7 +33,10 @@ public class PostController {
 
 	@Autowired
 	private PostService postService;
-
+	
+	@Autowired
+	private FeedService feedService;
+	
 	@Autowired
 	UserVO userVO;
 
@@ -66,20 +69,28 @@ public class PostController {
 
 		// findPostById
 		Long id = postVO.getId();
-
+		
 		logger.info("postId : " + id);
 		postVO = postService.findPostById(id);
 
+		
+		// insertFeedByPostId
+		feedService.insertFeedByPostIdAndUserId(id, userId);
+		
 		return new ResponseResult(HttpStatus.OK.value(), "Success", postVO);
 	}
 
 	@GetMapping("/post")
-	public ResponseResult findPostsAndUser() {
+	public ResponseResult findPostsAndUser(@CookieValue(value = "accesstoken", required = false) String accesstoken) {
 		logger.info("findPostsAndUser called");
 
-		List<PostVO> posts = new ArrayList<PostVO>();
+		List<PostAndUserVO> posts = new ArrayList<PostAndUserVO>();
 
-		posts = postService.findPostsAndUser();
+		if(accesstoken == null) {
+			posts = postService.findPostsAndUser();
+		}else {
+			posts = postService.findPostsAndUserWithIsFollow(accesstoken);
+		}
 
 		return new ResponseResult(HttpStatus.OK.value(), "Success", posts);
 	}
@@ -97,9 +108,8 @@ public class PostController {
 		Long userId = tokenVO.getUserId();
 		logger.info("userId : " + userId);
 
-		postAndUserVO.setUserId(userId);
 
-		List<PostAndUserVO> posts = postService.findPostAndUserByUserId(postAndUserVO);
+		List<PostAndUserVO> posts = postService.findPostAndUserByUserId(userId);
 
 		// post, user, token 3중 조인으로 token값에 의해서 findPostAndUser하기
 //		List<PostAndUserVO> posts = postService.findPostAndUserByToken(accesstoken);
@@ -139,6 +149,7 @@ public class PostController {
 
 		postVO.setUserId(userIdByPost);
 		
+		// 이것보다는 if token이 null이면 을 먼저 처리하는 데 depth를 줄일 수 있다.
 		if (accesstoken != null) {
 			// findTokenUserIdByToken
 			tokenVO = userService.findTokenByToken(accesstoken);
@@ -170,8 +181,17 @@ public class PostController {
 		logger.info("deletePostByPostId called");
 		String result = null;
 		
-		//findPostUserIdByPostId
+		// findPostUserIdByPostId
 		postVO = postService.findPostById(postId);
+		logger.info("postVO : "+ postVO);
+		
+		if (postVO == null) {
+			result = "해당 번호는 없는 글입니다.";
+			responseResult.setCode(HttpStatus.INTERNAL_SERVER_ERROR);
+			responseResult.setMessage("Error : "+ result);
+			responseResult.setData(null);
+			return responseResult;
+		}
 		Long userIdByPost = postVO.getUserId();
 
 		if (accesstoken != null) {
@@ -204,4 +224,10 @@ public class PostController {
 
 		return responseResult;
 	}
+
+	@GetMapping("/post/feed")
+	public ResponseResult findMyPostAndUserAndMyFollowerByUserId(@CookieValue(value = "accesstoken", required = false) String accesstoken ) {
+		return postService.findMyPostAndUserAndMyFollowerByUserId(accesstoken);
+	}
+	
 }

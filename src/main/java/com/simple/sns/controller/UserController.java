@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.simple.sns.domain.ResponseResult;
 import com.simple.sns.domain.TokenVO;
 import com.simple.sns.domain.UserVO;
+import com.simple.sns.service.FollowService;
 import com.simple.sns.service.UserService;
 import com.simple.sns.util.RandomToken;
 
@@ -25,6 +26,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private FollowService followService;
 	
 	@Autowired
 	UserVO userVO;
@@ -49,7 +53,6 @@ public class UserController {
 		return responseResult;
 	}
 	
-	// id로 회원 정보 하나 조회 
 	@GetMapping("/user")
 	public ResponseResult findUserById(@RequestParam("id") Long id) throws Exception {
 		logger.info("findUserById() called");
@@ -63,7 +66,6 @@ public class UserController {
 		return responseResult;
 	}
 	
-	// 회원가입
 	@PostMapping("/user")
 	public ResponseResult insertUser(@RequestBody UserVO userVO) throws Exception{
 		logger.info("insertUser() 메서드 호출");
@@ -84,7 +86,6 @@ public class UserController {
 		return responseResult;
 	}
 	
-	// 회원 인증
 	@PostMapping("/auth")
 	public ResponseResult insertToken(@RequestBody UserVO userVO) throws Exception {
 		logger.info("insertToken() called");
@@ -92,27 +93,21 @@ public class UserController {
 		logger.info("username : "+userVO.getUsername());
 		logger.info("password : "+userVO.getPassword());
 		
-		//getUerId
 		userVO = userService.findUserByUsernameAndPassword(userVO);
 		logger.info("userVO " + userVO);
 		Long userId = userVO.getId();
 		logger.info("userId : " +userId);
 		
-		//token 생성
 		StringBuffer token = RandomToken.makeToken();
 		
-		//token toString
 		String tokenToString = token.toString();
 		
-		//insert token
 		tokenVO.setUserId(userId);
 		tokenVO.setToken(tokenToString);
 		userService.insertToken(tokenVO);
 		
-		//select token
 		tokenVO = userService.findTokenByToken(tokenToString);
 		
-		//responseData
 		responseResult.setCode(HttpStatus.OK);
 		responseResult.setMessage("Success");
 		responseResult.setData(tokenVO);

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.follow">
+
+	<resultMap type="followVO" id="followResult">
+		<result property="followeeId" column="followee_id"/>
+		<result property="followerId" column="follower_id"/>
+		<result property="createdAt" column="created_at"/>
+	</resultMap>
+
+	<insert id="insertFollow" parameterType="followVO">
+		<![CDATA[
+			 INSERT INTO follow(followee_id, follower_id)
+			 values(#{followeeId}, #{followerId})
+		]]>
+	</insert>
+	
+	<delete id="deleteFollow" parameterType="followVO">
+		<![CDATA[
+			DELETE FROM follow WHERE followee_id=#{followeeId} AND follower_id=#{followerId}
+		]]>
+	</delete>
+	
+	<select id="findCountFollowByFolloweeIdAndFollowerId" parameterType="followVO" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) as count FROM FOLLOW WHERE followee_id = #{followeeId} AND follower_id = #{followerId}
+		]]>		
+	</select>
+	
+	<select id="findFollowVOsByFolloweeId" parameterType="Long" resultMap="followResult">
+		<![CDATA[
+			SELECT * FROM follow WHERE followee_id=#{userId}
+		]]>	
+	</select>
+	
+	<select id="findFollowVOsByFollowerId" parameterType="Long" resultMap="followResult">
+		<![CDATA[
+			SELECT * FROM follow WHERE follower_id=#{userId}
+		]]>	
+	</select>
+	
+	<select id="findCountFollowVOsByFollowerId" parameterType="Long" resultType="int">
+		<![CDATA[
+			select count(*) from follow WHERE follower_id=#{userId}
+		]]>	
+	</select>
+</mapper>

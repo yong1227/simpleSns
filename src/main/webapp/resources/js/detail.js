@@ -1,8 +1,4 @@
 $(document).ready(function(){
-	var token;
-	if(document.cookie.includes("accesstoken")) {
-		token = document.cookie.split('token=')[1];	
-	}
 	var postId = $('#detail_post_id').attr("value");
 	postId = postId.replace(/,/g, "");
 	console.log("postId - " + postId);
@@ -19,30 +15,15 @@ $(document).ready(function(){
     	console.log(err.responseJSON);
     });
 	
-//	$.ajax({
-//        url: "/comments?post_id="+postId
-//    }).then(function(data) {
-//    	$.each(data, function(index, e) {
-//    		$('#comments').append(
-//    				'<div class="media mb-4"><div class="media-body"><h5 class="mt-0">' + e.user
-//    				+ '</h5>' + e.comment 
-//    	            + '</div></div>');
-//    	});
-//       console.log(data);
-//    }, function(err) {
-//    	console.log(err.responseJSON);
-//    });
-	
 	
 	$('#detail_delete_btn').click(function(){
-		console.log('delete btn');
 		var postId = $('#detail_post_id').attr("value");
+		postId = postId.replace(/,/g, "");
 		console.log("delete button click! - " + postId);
 		$.ajax({
 	        url: "/post/"+postId,
 	        method: "DELETE"
 	    }).then(function(data) {
-	    	alert(data.message);
 	    	window.location.href = '/';
 	    }, function(err) {
 	    	alert(err.responseJSON);
@@ -50,14 +31,13 @@ $(document).ready(function(){
 	});
 	
 	$('#modify_post_btn').click(function(){
-		console.log('modifiy btn');
 		var postId = $('#detail_post_id').attr("value");
 		var title = $('#modify_title_text').val();
 		var content = $('#modify_content_text').val();
 		
-		console.log('postId :'+ postId);
-		console.log('title : '+ title);
-		console.log('content : '+ content);
+		console.log(postId);
+		console.log(title);
+		console.log(content);
 		
 		var param = {
 			id: postId,
@@ -72,8 +52,7 @@ $(document).ready(function(){
             contentType: 'application/json',
             data: JSON.stringify(param)
 	    }).then(function(data) {
-	    	alert(data.message);
-	    	window.location.href = '/post/detail/'+postId;
+	    	window.location.href = '/page/detail/'+postId;
 	    }, function(err) {
 	    	alert(err.responseJSON);
 	    });
@@ -105,38 +84,5 @@ $(document).ready(function(){
 	    }, function(err) {
 	    	alert(err.responseJSON);
 	    });
-	});
-	
-	$('#save_post_btn').click(function(){
-		var title = $('#create_title_text').val();
-		var content = $('#create_content_text').val();
-		
-		console.log(title);
-		console.log(content);
-		
-		var param = {
-			title: title,
-			content: content
-		}
-		
-		$.ajax({
-			beforeSend: function(xhr){
-				xhr.setRequestHeader('accesstoken', token);
-	        },
-	        url: "/post",
-	        method: "POST",
-	        dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify(param)
-	    }).then(function(data) {
-	    	window.location.href = '/';
-	    }, function(err) {
-	    	alert(err.responseJSON);
-	    });
-	});
-	
-	$('#header_logout_btn').click(function(){
-		document.cookie = "accesstoken=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-		window.location.href = '/';
 	});
 });
