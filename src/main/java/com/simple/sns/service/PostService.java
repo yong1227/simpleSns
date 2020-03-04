@@ -37,6 +37,7 @@ public class PostService {
 		return postDAO.findPostById(id);
 	}
 	
+	// All post follow
 	public List<PostAndUserVO> findPostsAndUserWithIsFollow(String accesstoken){
 		TokenVO tokenVO =  userDAO.findTokenByToken(accesstoken);
 		Long userId = tokenVO.getUserId();
@@ -44,30 +45,30 @@ public class PostService {
 		List<PostAndUserVO> findPostsAndUserWithIsFollows = postDAO.findPostsAndUserWithIsFollow(userId);
 		
 		for (PostAndUserVO findPostsAndUserVO : findPostsAndUserWithIsFollows) {
-			int countFolloweeId = followDAO.findCountFollowVOsByFollowerId(userId);
-			if(countFolloweeId == 0) {
-				findPostsAndUserVO.getUser().setIsFollow(false);
-			}else {
-				if(findPostsAndUserVO.getUserId() == userId){
+			Long postUserIdByPostVo = findPostsAndUserVO.getUserId();
+				
+			List<FollowVO> followVOs =  followDAO.findFollowVOsByFollowerId(userId);
+			if(followVOs.size()==0 | followVOs.equals(null)) {
+				if(postUserIdByPostVo ==userId ) {
 					findPostsAndUserVO.getUser().setIsFollow(null);
 				}else {
-					List<FollowVO> followVOs =  followDAO.findFollowVOsByFollowerId(userId);
-					
-					for (FollowVO followVO : followVOs) {
-						Long followeeIdByFollowVO = followVO.getFolloweeId();
-						Long followeeIdByPostAndUserVO =  findPostsAndUserVO.getUserId();
-						
-						if (followeeIdByPostAndUserVO == followeeIdByFollowVO) {
-							findPostsAndUserVO.getUser().setIsFollow(true);
-							break;
-						} else {
-							findPostsAndUserVO.getUser().setIsFollow(false);
-						}
+					findPostsAndUserVO.getUser().setIsFollow(false);
+				}
+			}else {
+				for (FollowVO followVO : followVOs) {
+					Long followeeIdByFollowVO =  followVO.getFolloweeId();
+					if(postUserIdByPostVo == userId | postUserIdByPostVo.equals(userId)) {
+						findPostsAndUserVO.getUser().setIsFollow(null);
+						break;
+					} else if(postUserIdByPostVo == followeeIdByFollowVO) {
+						findPostsAndUserVO.getUser().setIsFollow(true);
+						break;
+					} else {
+						findPostsAndUserVO.getUser().setIsFollow(false);
 					}
 				}
-			}	
+			}
 		}
-		
 		return findPostsAndUserWithIsFollows;
 	}
 
@@ -95,22 +96,32 @@ public class PostService {
 		return postDAO.updatePostTitleAndContent(postVO);
 	}
 
+	//MyFeed
 	public ResponseResult findMyPostAndUserAndMyFollowerByUserId(String accesstoken) {
 		TokenVO tokenVO = userDAO.findTokenByToken(accesstoken);
 		Long userId = tokenVO.getUserId();
 		List<PostAndUserVO> postAndUserVOs = postDAO.findMyPostAndUserAndMyFollowerByUserId(userId);
 		
 		for (PostAndUserVO postAndUserVO : postAndUserVOs) {
-			if(postAndUserVO.getUserId() == userId ) {
-				postAndUserVO.getUser().setIsFollow(null);
-				break;
+			List<FollowVO> followVOs =  followDAO.findFollowVOsByFollowerId(userId);
+			
+			Long postUserIdByPostVo = postAndUserVO.getUserId();
+			if(followVOs.size()==0 | followVOs.equals(null)) {
+				if(postUserIdByPostVo ==userId ) {
+					postAndUserVO.getUser().setIsFollow(null);
+				}else {
+					postAndUserVO.getUser().setIsFollow(false);
+				}
 			}else {
-				List<FollowVO> followVOs =  followDAO.findFollowVOsByFollowerId(userId);
 				for (FollowVO followVO : followVOs) {
-					if (postAndUserVO.getUserId() ==  followVO.getFolloweeId()) {
+					Long followeeIdByFollowVO =  followVO.getFolloweeId();
+					if(postUserIdByPostVo == userId | postUserIdByPostVo.equals(userId)) {
+						postAndUserVO.getUser().setIsFollow(null);
+						break;
+					} else if(postUserIdByPostVo == followeeIdByFollowVO) {
 						postAndUserVO.getUser().setIsFollow(true);
 						break;
-					}else {
+					} else {
 						postAndUserVO.getUser().setIsFollow(false);
 					}
 				}

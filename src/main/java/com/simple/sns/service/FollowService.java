@@ -39,7 +39,6 @@ public class FollowService {
 		followVO.setFolloweeId(followeeId);
 
 		int countResult = followDAO.findCountFollowByFolloweeIdAndFollowerId(followVO);
-		logger.info("countResult : " + countResult);
 
 		if (countResult == 0) {
 			followDAO.insertFollow(followVO);

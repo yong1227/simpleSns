@@ -31,7 +31,6 @@ public class PostDAO {
 	}
 	
 	public List<PostAndUserVO> findPostsAndUserWithIsFollow(Long userId){
-		logger.info("findPostsAndUserWithIsFollow called");
 		return sqlSession.selectList("mapper.post.findPostsAndUserWithIsFollow", userId);
 	}
 	

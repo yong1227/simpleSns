@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.simple.sns.domain.ResponseResult;
 import com.simple.sns.domain.TokenVO;
 import com.simple.sns.domain.UserVO;
-import com.simple.sns.service.FollowService;
 import com.simple.sns.service.UserService;
 import com.simple.sns.util.RandomToken;
 
@@ -26,9 +25,6 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private FollowService followService;
 	
 	@Autowired
 	UserVO userVO;
@@ -42,7 +38,6 @@ public class UserController {
 	// 모든 user
 	@GetMapping("/userAll")
 	public ResponseResult findUsers() {
-		logger.info("findUsers() called");
 		
 		List<UserVO> userList = userService.findUsers();
 		
@@ -55,7 +50,6 @@ public class UserController {
 	
 	@GetMapping("/user")
 	public ResponseResult findUserById(@RequestParam("id") Long id) throws Exception {
-		logger.info("findUserById() called");
 		
 		userVO = userService.findUserById(id);
 		
@@ -68,9 +62,6 @@ public class UserController {
 	
 	@PostMapping("/user")
 	public ResponseResult insertUser(@RequestBody UserVO userVO) throws Exception{
-		logger.info("insertUser() 메서드 호출");
-		
-		logger.info("userVO : " + userVO);
 		
 		userService.insertUser(userVO);
 
@@ -88,15 +79,8 @@ public class UserController {
 	
 	@PostMapping("/auth")
 	public ResponseResult insertToken(@RequestBody UserVO userVO) throws Exception {
-		logger.info("insertToken() called");
-		
-		logger.info("username : "+userVO.getUsername());
-		logger.info("password : "+userVO.getPassword());
-		
 		userVO = userService.findUserByUsernameAndPassword(userVO);
-		logger.info("userVO " + userVO);
 		Long userId = userVO.getId();
-		logger.info("userId : " +userId);
 		
 		StringBuffer token = RandomToken.makeToken();
 		

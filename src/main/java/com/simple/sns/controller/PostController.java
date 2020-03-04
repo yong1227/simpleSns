@@ -55,10 +55,7 @@ public class PostController {
 	@PostMapping("/post")
 	public ResponseResult insertPostByTitleAndContent(@RequestBody PostVO postVO,
 			@CookieValue(value = "accesstoken") String accesstoken) {
-		logger.info("insertPostByTitleAndContent() called");
 
-		logger.info("accesstoken : " + accesstoken);
-		
 		// findUserIdByToken
 		tokenVO = userService.findTokenByToken(accesstoken);
 		Long userId = tokenVO.getUserId();
@@ -70,9 +67,7 @@ public class PostController {
 		// findPostById
 		Long id = postVO.getId();
 		
-		logger.info("postId : " + id);
 		postVO = postService.findPostById(id);
-
 		
 		// insertFeedByPostId
 		feedService.insertFeedByPostIdAndUserId(id, userId);
@@ -82,7 +77,6 @@ public class PostController {
 
 	@GetMapping("/post")
 	public ResponseResult findPostsAndUser(@CookieValue(value = "accesstoken", required = false) String accesstoken) {
-		logger.info("findPostsAndUser called");
 
 		List<PostAndUserVO> posts = new ArrayList<PostAndUserVO>();
 
@@ -99,15 +93,9 @@ public class PostController {
 	public ResponseResult findPostAndUserByToken(
 			@CookieValue(value = "accesstoken", required = false) String accesstoken) {
 
-		logger.info("findPostAndUserByToken called");
-
-		logger.info("accesstoken : " + accesstoken);
-
 		tokenVO = userService.findTokenByToken(accesstoken);
 
 		Long userId = tokenVO.getUserId();
-		logger.info("userId : " + userId);
-
 
 		List<PostAndUserVO> posts = postService.findPostAndUserByUserId(userId);
 
@@ -124,11 +112,8 @@ public class PostController {
 	// postDetail
 	@GetMapping("/post/{postId}")
 	public ResponseResult findPostAndUserByPostId(@PathVariable("postId") Long postId) {
-		logger.info("findPostAndUserByPostId called");
-		logger.info("postId : " + postId);
 
 		postAndUserVO = postService.findPostAndUserByPostId(postId);
-		logger.info("postAndUserVO : " + postAndUserVO);
 
 		return new ResponseResult(HttpStatus.OK.value(), "Success", postAndUserVO);
 	}
@@ -136,16 +121,13 @@ public class PostController {
 	@PutMapping("/post")
 	public ResponseResult updatePostTitleAndContent(@RequestBody PostVO postVO,
 			@CookieValue(value = "accesstoken", required = false) String accesstoken) {
-		logger.info("updatePostTitleAndContent called");
 		PostVO postVO2 = new PostVO();
 		
 		String result = null;
 
 		//findPostUserIdByPostId
-		logger.info("postVO1 : "+ postVO);
 		postVO2 = postService.findPostById(postVO.getId());
 		Long userIdByPost = postVO2.getUserId();
-		logger.info("userIdByPost : "+ userIdByPost);
 
 		postVO.setUserId(userIdByPost);
 		
@@ -154,10 +136,8 @@ public class PostController {
 			// findTokenUserIdByToken
 			tokenVO = userService.findTokenByToken(accesstoken);
 			Long userIdByToken = tokenVO.getUserId();
-			logger.info("userIdByToken : "+ userIdByToken);
 			
 			if (userIdByPost == userIdByToken) {
-				logger.info("postVO1-2 : "+ postVO);
 				postService.updatePostTitleAndContent(postVO);
 				result = "Success";
 				postVO = postService.findPostById(postVO.getId());
@@ -178,12 +158,10 @@ public class PostController {
 	@DeleteMapping("/post/{postId}")
 	public ResponseResult deletePostByPostId(@PathVariable("postId") Long postId,
 			@CookieValue(value = "accesstoken", required = false) String accesstoken) throws Exception {
-		logger.info("deletePostByPostId called");
 		String result = null;
 		
 		// findPostUserIdByPostId
 		postVO = postService.findPostById(postId);
-		logger.info("postVO : "+ postVO);
 		
 		if (postVO == null) {
 			result = "해당 번호는 없는 글입니다.";

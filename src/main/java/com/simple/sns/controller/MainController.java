@@ -28,8 +28,6 @@ public class MainController {
 	
 	@GetMapping("/")
 	 public ModelAndView index(@CookieValue(value = "accesstoken", required = false) String accesstoken) throws Exception {
-		logger.info("index called");
-		logger.info("accesstoken : "+ accesstoken);
 		ModelAndView mv = new ModelAndView("index");
 		
 		if( accesstoken != null ) {
@@ -38,7 +36,6 @@ public class MainController {
 			Long userId = tokenVO.getUserId();
 			
 			userVO = userService.findUserById(userId);
-			logger.info("userVO : "+ userVO);
 			mv.addObject("user" , userVO);
 		}
 		return mv;
@@ -58,9 +55,7 @@ public class MainController {
 	
 	@GetMapping("/post/detail/{id}")
 	public ModelAndView postDetail(@PathVariable("id") Long id, @CookieValue(value = "accesstoken", required = false) String accesstoken) throws Exception {
-		logger.info("postDetail called");
 		ModelAndView mv = new ModelAndView("detail");
-		logger.info("accesstoken : "+ accesstoken);
 
 		if( accesstoken != null ) {
 			tokenVO = userService.findTokenByToken(accesstoken);
@@ -68,7 +63,6 @@ public class MainController {
 			Long userId = tokenVO.getUserId();
 			
 			userVO = userService.findUserById(userId);
-			logger.info("userVO : "+ userVO);
 			mv.addObject("user" , userVO);
 		}
 		return mv;
